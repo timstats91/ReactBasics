@@ -36,18 +36,35 @@ const Player = (props) => {
             <span className="player-name">
                 {props.name}
             </span>
-            <Counter score={props.score} />
+            <Counter />
         </div>
     );
 }
 
 class Counter extends React.Component {
+
+    state = {
+        score: 0
+    };
+    
+    incrementScore() {
+        this.setState({
+            score: this.state.score + 1
+        });
+    };
+
+    decrementScore() {
+        this.setState({
+            score: this.state.score - 1
+        });
+    };
+
     render() {
         return (
             <div className="counter">
-                <button className="counter-action decrement"> - </button>
-                <span className="counter-score">{ this.props.score }</span>
-                <button className="counter-action increment"> + </button>
+                <button className="counter-action decrement" onClick={this.decrementScore.bind(this)}> - </button>
+                <span className="counter-score">{ this.state.score }</span>
+                <button className="counter-action increment" onClick={this.incrementScore.bind(this)}> + </button>
             </div>
         );
     }
