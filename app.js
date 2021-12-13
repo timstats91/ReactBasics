@@ -1,24 +1,5 @@
 const players = [
-    {
-        name: "Tim",
-        score: 50,
-        id: 1
-      },
-      {
-        name: "Stef",
-        score: 85,
-        id: 2
-      },
-      {
-        name: "Beyonce",
-        score: 95,
-        id: 3
-      },
-      {
-        name: "Monte",
-        score: 80,
-        id: 4
-      }
+
 ];
 
 const Header = (props) => {
@@ -34,6 +15,7 @@ const Player = (props) => {
     return (
         <div className="player">
             <span className="player-name">
+                <button className="remove-player" onClick={ () => props.removePlayer(props.id) }>✖</button>
                 {props.name}
             </span>
             <Counter />
@@ -71,26 +53,59 @@ class Counter extends React.Component {
 
 }
 
-const App = (props) => {
-    return (
-        <div className="scoreboard">
-            <Header 
-                title="Scoreboard" 
-                totalPlayers={props.initialPlayers.length} 
-            />
+class App extends React.Component {
+    
+    state = {
+        players: [
+            {
+                name: "Tim",
+                id: 1
+              },
+              {
+                name: "Stef",
+                id: 2
+              },
+              {
+                name: "Beyonce",
+                id: 3
+              },
+              {
+                name: "Monte",
+                id: 4
+              }
+        ]
+    };
 
-            {/* Players list */}
-            {props.initialPlayers.map( player =>
-                <Player 
-                    name={player.name}
-                    score={player.score}
-                    key={player.id.toString()}
-                />)}
-        </div>
-    );
+    handleRemovePlayer = (id) => {
+        this.setState( prevState => {
+            return {
+                players: prevState.players.filter( p => p.id !== id  )
+            }
+        });
+    }
+
+    render() {
+        return (
+            <div className="scoreboard">
+                <Header 
+                    title="Scoreboard" 
+                    totalPlayers={this.state.players.length} 
+                />
+    
+                {/* Players list */}
+                {this.state.players.map( player =>
+                    <Player 
+                        name={player.name}
+                        id={player.id}
+                        key={player.id.toString()}
+                        removePlayer={this.handleRemovePlayer}
+                    />)}
+            </div>
+        );
+    }
 }
 
 ReactDOM.render(
-    <App initialPlayers={players} />,
+    <App />,
     document.getElementById('root')
 );
